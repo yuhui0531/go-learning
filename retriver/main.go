@@ -25,7 +25,8 @@ func main() {
 		UserAgent: "Mozilla/5.0",
 		Timeout:   time.Minute,
 	}
-	//fmt.Println(download(r, url))
+
+	fmt.Println(download(r, url))
 
 	fmt.Printf("%T %v\n", r, r)
 	inspect(r)
