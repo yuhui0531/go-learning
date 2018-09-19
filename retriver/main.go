@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"retriver/mock"
-	real2 "retriver/real"
+	"go-learning/retriver/mock"
+	"go-learning/retriver/real"
 	"time"
 )
 
@@ -21,7 +21,7 @@ func main() {
 	fmt.Printf("%T %v\n", r, r)
 	fmt.Println(download(r, url))
 
-	r = &real2.Retriever{
+	r = &real.Retriever{
 		UserAgent: "Mozilla/5.0",
 		Timeout:   time.Minute,
 	}
@@ -30,15 +30,15 @@ func main() {
 	fmt.Printf("%T %v\n", r, r)
 	inspect(r)
 
-	realRetriever := r.(*real2.Retriever)
+	realRetriever := r.(*real.Retriever)
 	fmt.Println(realRetriever.Timeout)
 }
 
 func inspect(r Retriever) {
 	switch v := r.(type) {
-	case mock.Retriever:
+	case *mock.Retriever:
 		fmt.Println("contents", v.Contents)
-	case *real2.Retriever:
+	case *real.Retriever:
 		fmt.Println("UserAgent", v.UserAgent)
 	}
 }
