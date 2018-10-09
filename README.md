@@ -79,7 +79,7 @@ const(
   eof =- 1
 )
 //4、常量的多重赋值，类似变量的多重赋值
-const u, v float32 = 0,3
+const u, v float32 = 0, 3
 const a, b, c = 3, 4, "foo"    //无类型常量的多重赋值
 //5、常量赋值是编译期行为，可以赋值为一个编译期运算的常量表达式
 const mask = 1 << 3
@@ -425,4 +425,29 @@ two: 2
 three: 3
 函数返回值： 0
 */
+```
+# 面向对象编程
+把一组数据结构和处理它们的方法组成`对象（object）`，把相同行为的对象归纳为`类（class）`，通过类的`封装（encapsulation）`隐藏内部细节，通过`继承（inheritance）`实现类的特化（specialization）[方法的重写，子类不同于父类的特性]／泛化（generalization）[共性，子类都拥有父类的特性]，通过`多态（polymorphism）`实现基于对象类型的动态分派（dynamic dispatch）。
+
+## 类的声明
+类的声明包括:
+`基础类型`(byte、int、bool、float等)
+`复合类型`(数组、结构体、指针等)
+`可以指向任何对象的类型`(Any类型，类似Java的Object类型)
+`值语义和引用语义`
+`面向对象类型`
+`接口`
+> Go大多数类型为值语义，可以给任何类型添加方法（包括内置类型，不包括指针类型）。Any类型是空接口即interface{}。
+### 方法
+```go
+type Integer int
+func (a Integer) Less(b Integer) bool{
+    //表示a这个对象定义了Less这个方法，a可以为任意类型
+    return a < b
+}
+
+//类型基于值传递，如果要修改值需要传递指针
+func (a *Integer) Add(b Integer){
+    *a += b //通过指针传递来改变值
+}
 ```
