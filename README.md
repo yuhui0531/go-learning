@@ -46,14 +46,14 @@ v3 := 10
 //1、声明后再变量赋值
 var v int
 v = 10
-//2、多重赋值，经常使用在函数的多返回值中，err,v=func(arg)
-i，j = j,i  //两者互换，并不需要引入中间变量
+//2、多重赋值，经常使用在函数的多返回值中，err, v = func(arg)
+i, j = j, i  //两者互换，并不需要引入中间变量
 ```
 ### 匿名变量
 ```go
 //Go中所有声明后的变量都需要调用到，当出现函数多返回值，并且部分返回值不需要使用时，可以使用匿名变量丢弃该返回值
-func GetName()(firstName,lastName,nickName string){
-  return "May","Chan","Make"
+func GetName() (firstName, lastName, nickName string){
+  return "May", "Chan", "Make"
 }
 _, _, nickName := GetName()  //使用匿名变量丢弃部分返回值
 ```
@@ -136,11 +136,11 @@ v2 = int32(v1)
 //2、数值运算,支持“+,-,*,/和%”
 5 % 3 //求余
 
-//3、比较运算,“<,>,==,>=,<=,!=”
+//3、比较运算,“<, >, ==, >=, <=, !=”
 //不同类型不能进行比较例如int和int8，但可以与字面常量（literal）进行比较
 var i int32
 var j int64
-i,j = 1,2
+i, j = 1, 2
 if i == j  //编译错误，不同类型不能进行比较
 if i == 1 || j == 2  //编译通过，可以与字面常量（literal）进行比较
 ```
@@ -254,7 +254,7 @@ m2["a"] = "aa"
 m2["b"] = "bb"
 
 // 初始化 + 赋值一体化
-m3 := map[string]string{
+m3 := map[string] string {
     "a": "aa",
     "b": "bb",
 }
@@ -262,7 +262,7 @@ m3 := map[string]string{
 //2、元素删除
 //delete()函数删除对应key的键值对，如果key不存在，不会报错；
 //如果value为nil，则会抛出异常(panic)。
-delete(map1,key)
+delete(map1, key)
 
 //3、元素查找
 value, ok := myMap[key]
@@ -305,7 +305,7 @@ if _, ok := myMap[valueX]; ok {
 ## 函数
 ### 函数定义与调用
 ```go
-//1、函数组成：关键字func ,函数名，参数列表，返回值，函数体，返回语句
+//1、函数组成：关键字func, 函数名, 参数列表, 返回值, 函数体, 返回语句
 //先名称后类型
 func 函数名(参数列表)(返回值列表){  //参数列表和返回值列表以变量声明的形式，如果单返回值可以直接加类型
   函数体
@@ -320,7 +320,7 @@ func Add(a, b int)(ret int, err error){
 //2、函数调用
 //先导入函数所在的包，直接调用函数
 import "mymath"
-sum,err := mymath.Add(1, 2)   //多返回值和错误处理机制
+sum, err := mymath.Add(1, 2)   //多返回值和错误处理机制
 //可见性，包括函数、类型、变量
 //本包内可见(private)：小写字母开头
 //包外可见(public)：大写字母开头
