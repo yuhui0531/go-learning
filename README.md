@@ -3,8 +3,8 @@
 
 类别 | 关键字 | 说明
 ---|---|---
-程序声明 | package，import | 包的声明和导入
-声明与定义 | var，const | 变量和常量的声明
+程序声明 | package, import | 包的声明和导入
+声明与定义 | var, const | 变量和常量的声明
 &nbsp; | type | 用于定义类型
 复合数据类型|struct|定义结构体，类似java中的class
 &nbsp; | interface | 定义接口
@@ -13,11 +13,11 @@
 &nbsp; | chan | 定义管道，并发中channel通信
 并发编程 | go | Go Routine
 &nbsp;|select|用于选择不同类型通信
-流程控制|for；if，else；switch，case|循环语句；条件语句；选择语句
-&nbsp;|break，continue，fallthrough，default，goto|跳转语句等
+流程控制|for, if, else, switch, case|循环语句；条件语句；选择语句
+&nbsp;|break, continue, fallthrough, default, goto|跳转语句等
 &nbsp;|return|函数返回值
 &nbsp;|defer|延迟函数，用于return前释放资源
-&nbsp;|range|用于读取slice，map，channel容器类数据
+&nbsp;|range|用于读取slice, map, channel容器类数据
 # 顺序编程
 ## 变量
 ### 变量声明
@@ -37,7 +37,7 @@ var {
 var v1 int = 10
 //2、使用关键字var，直接对变量赋值，go可以自动推导出变量类型
 var v2 = 10
-//3、直接使用“：=”对变量赋值，不使用var，两者同时使用会语法冲突，推荐使用
+//3、直接使用“:=”对变量赋值，不使用var，两者同时使用会语法冲突，推荐使用
 v3 := 10
 ```
 ### 变量赋值
@@ -80,7 +80,7 @@ const(
 )
 //4、常量的多重赋值，类似变量的多重赋值
 const u, v float32 = 0,3
-const a, b, c = 3,4,"foo"    //无类型常量的多重赋值
+const a, b, c = 3, 4, "foo"    //无类型常量的多重赋值
 //5、常量赋值是编译期行为，可以赋值为一个编译期运算的常量表达式
 const mask = 1 << 3
 ```
@@ -133,7 +133,7 @@ var v2 int32
 v1 := 64
 v2 = int32(v1)
 
-//2、数值运算,支持“+,-,*,/和%”
+//2、数值运算,支持“+, -, *, /和%”
 5 % 3 //求余
 
 //3、比较运算,“<, >, ==, >=, <=, !=”
@@ -213,10 +213,10 @@ slice2 := make([]int, 5, 10)  //元素初始值为0，初始个数为5，预留�
 slice3 := []int{1, 2, 3, 4, 5} //初始化赋值
 //c)基于切片创建
 oldSlice := []int{1, 2, 3, 4, 5}
-newSlice := oldSlice[ :3 ] //基于切片创建，不能超过原切片的存储空间(cap函数的值)
+newSlice := oldSlice[:3] //基于切片创建，不能超过原切片的存储空间(cap函数的值)
 
 //2、元素遍历
-for i,v := range slice{
+for i, v := range slice{
   //与数组的方式一致，使用range来遍历
   //第一个返回值(i)为索引，第二个为元素的值(v)
 }
