@@ -474,4 +474,47 @@ b[1]++
 fmt.Println(a, *b)  //a=[1, 3, 3]  b=[1, 3, 3]   //*b,取地址指向的值
 ```
 ### 结构体
-TBC
+> struct的功能类似Java的class，可实现嵌套组合(类似继承的功能) \
+> struct实际上就是一种复合类型，只是对类中的属性进行定义赋值. \
+> struct并没有对方法进行定义，方法可以随时定义绑定到该类的对象上，更具灵活性。\
+> struct可利用嵌套组合来实现类似继承的功能避免代码重复。
+
+```go
+type Rect struct{//定义矩形类 
+    x, y float64  //类型只包含属性，并没有方法
+    width, height float64
+}
+
+//为Rect类型绑定Area的方法，*Rect为指针引用可以修改传入参数的值
+func (r *Rect) Area() float64 {
+    //方法归属于类型，不归属于具体的对象，声明该类型的对象即可调用该类型的方法
+    return r.width*r.height
+}
+```
+### 类型初始化
+数据初始化的内建函数new()与make()，二者都是用来分配空间。区别如下:
+- new()
+    1. func new(Type) *Type
+    2. 内置函数new分配空间.传递给new函数的是一个内省,而不是一个值.`返回值是指向这个新分配的零值的指针.`
+- make()
+    1. func make(Type, size IntegerType) Type
+    2. 内建函数 make 分配并且初始化 一个 slice, 或者 map 或者 chan 对象。 并且只能是这三种对象。和`new`一样，第一个参数是类型，不是一个值。但是`make的返回值就是这个类型`（即使一个引用类型），而不是指针。具体的返回值，依赖具体传入的类型。
+```go
+// 创建实例
+rect1:=new(Rect) //new一个对象
+rect2:=&Rect{} //为赋值默认值，bool默认值为false，int默认为零值0，string默认为空字符串
+rect3:=&Rect{0, 0, 100, 200} //取地址并赋值,按声明的变量顺序依次赋值
+rect4:=&Rect{width:100, height:200} //按变量名赋值不按顺序赋值
+
+// 构造函数：没有构造参数的概念，通常由全局的创建函数NewXXX来实现构造函数的功能
+func NewRect(x,y,width,height float64) *Rect{  
+    return &Rect{x, y, width, height} //利用指针来改变传入参数的值达到类似构造参数的效果
+}
+
+// 方法的重载,Go不支持方法的重载（函数同名，参数不同）
+// v …interface{}表示参数不定的意思，其中v是slice类型，及声明不定参数，
+// 可以传入任意参数，实现类似方法的重载
+func (poem *Poem) recite(v ...interface{}) {
+    fmt.Println(v)
+}
+```
