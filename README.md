@@ -460,16 +460,18 @@ func (a *Integer) Add(b Integer){
 
 ```go
 //值传递和引用传递
-b=ab.Modify() 
+b = a
+b.Modify() 
 //值传递
-var a=[3] int {1, 2, 3}
+var a = [3] int {1, 2, 3}
 b := a
 b[1]++
-fmt.Println(a,b) //a=[1,2,3]  b=[1,3,3]
+fmt.Println(a, b) //a = [1, 2, 3]  b = [1, 3, 3]
 //引用传递
 a := [3]int{1, 2, 3}
 b := &a  //b指向a,即为a的地址，对b指向的值改变实际上就是对a的改变（数组本身就是一种地址指向）
 b[1]++
-fmt.Println(a, *b)  //a=[1,3,3]  b=[1,3,3]   //*b,取地址指向的值
+fmt.Println(a, *b)  //a=[1, 3, 3]  b=[1, 3, 3]   //*b,取地址指向的值
 ```
-
+### 结构体
+TBC
