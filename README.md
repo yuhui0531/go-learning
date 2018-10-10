@@ -636,17 +636,17 @@ func (r *Rect) area() float64{
 ### 接口[多态]
 多态性(polymorphism)是允许你将父对象设置成为和一个或更多的他的子对象相等的技术,赋值之后,父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作.
 
->`简而言之,多态就是允许将子类类型的指针赋值给父类类型的指针.` \
-> 即一个引用变量倒底会指向哪个类的实例对象,该引用变量发出的方法调用到底是哪个类中实现的方法,`必须在由程序运行期间才能决定.`\
+> 简而言之,多态就是允许将子类类型的指针赋值给父类类型的指针. \
+> 一个引用变量倒底会指向哪个类的实例对象,该引用变量发出的方法调用到底是哪个类中实现的方法,`必须在由程序运行期间才能决定.`\
 > 不修改程序代码就可以改变程序运行时所绑定的具体代码,让程序可以选择多个运行状态,这就是多态性.\
-> 多态分为编译时多态(静态多态)和运行时多态(动态多态).\
-> `编译时多态一般通过方法重载实现,运行时多态一般通过方法重写实现.`
+> 多态分为编译时多态(静态多态)和运行时多态(动态多态).`编译时多态一般通过方法重载实现,运行时多态一般通过方法重写实现.`
 
 #### 接口的概念
 
-> `接口即一组方法的集合,定义了对象的一组行为,方法包含实际的代码.换句话说,一个接口就是定义（规范或约束）,而方法就是实现,接口的作用应该是将定义与实现分离,降低耦合度.` \
+> 接口即一组方法的集合,定义了对象的一组行为,方法包含实际的代码.\
+> 一个接口就是定义（规范或约束）,而方法就是实现,接口的作用应该是将定义与实现分离,降低耦合度. \
 > 习惯用“er”结尾来命名,例如“Reader”.\
-> `接口与对象的关系是多对多,即一个对象可以实现多个接口,一个接口也可以被多个对象实现.`
+> 接口与对象的关系是多对多,即一个对象可以实现多个接口,一个接口也可以被多个对象实现.
 
 接口是Go语言整个类型系统的基石,其他语言的接口是不同组件之间的契约的存在,对契约的实现是强制性的,必须显式声明实现了该接口,这类接口称之为“侵入式接口”.而Go语言的接口是隐式存在,只要实现了该接口的所有函数则代表已经实现了该接口,并不需要显式的接口声明.
 
@@ -1035,12 +1035,12 @@ type Server struct {
     ServerIP   string
 }
 
-type Serverslice struct {
+type ServerSlice struct {
     Servers []Server
 }
 
 func main() {
-    var s Serverslice
+    var s ServerSlice
     str := `{"servers":
     [{"serverName":"Shanghai_VPN","serverIP":"127.0.0.1"},
     {"serverName":"Beijing_VPN","serverIP":"127.0.0.2"}]}`
@@ -1074,12 +1074,12 @@ type Server struct {
     ServerIP   string `json:"serverIP,omitempty"`
 }
 
-type Serverslice struct {
+type ServerSlice struct {
     Servers []Server `json:"servers"`
 }
 
 func main() {
-    var s Serverslice
+    var s ServerSlice
     s.Servers = append(s.Servers, Server{ServerName: "Shanghai_VPN", ServerIP: "127.0.0.1"})
     s.Servers = append(s.Servers, Server{ServerName: "Beijing_VPN", ServerIP: "127.0.02"})
     b, err := json.Marshal(s)
