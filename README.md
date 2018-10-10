@@ -676,10 +676,12 @@ var usb IUSB = new(Mouse)
 usb.Connect()
 usb.Close()
 ```
+
 ##### 将接口赋值给另一个接口
 1) 只要两个接口拥有相同的方法列表（与次序无关），即是两个相同的接口，可以相互赋值.
-2) `接口赋值只需要接口A的方法列表是接口B的子集（即假设接口A中定义的所有方法，都在接口B中有定义），那么B接口的实例可以赋值给A的对象。反之不成立，即子接口B包含了父接口A，因此可以将子接口的实例赋值给父接口。`
+2) ``接口赋值只需要接口A的方法列表是接口B的子集（即假设接口A中定义的所有方法，都在接口B中有定义），那么B接口的实例可以赋值给A的对象。反之不成立，即子接口B包含了父接口A，因此可以将子接口的实例赋值给父接口。``
 3) `即子接口实例实现了子接口的所有方法，而父接口的方法列表是子接口的子集，则子接口实例自然实现了父接口的所有方法，因此可以将子接口实例赋值给父接口。`
+
 ```go
 type Writer interface{ //父接口
     Write(buf []byte) (n int, err error)
@@ -692,4 +694,282 @@ type ReadWriter interface{    //子接口
 
 var file1 ReadWriter = new(File)   //子接口实例
 var file2 Writer = file1           //子接口实例赋值给父接口
+```
+
+##### 接口查询
+若要在 switch 外判断一个接口类型是否实现了某个接口，``可以使用“逗号 ok”。``
+```go
+value, ok := InterfaceVariable.(implementType)
+```
+其中 InterfaceVariable 是接口变量（接口值），implementType 为实现此接口的类型，value 返回接口变量实际类型变量的值，如果该类型实现了此接口返回 true。
+```go
+//判断file1接口指向的对象实例是否是File类型
+var file1 Writer = ...
+if file5, ok := file1.(File); ok{
+  ...
+}
+```
+
+##### 接口类型查询
+
+``在 Go 中，要判断传递给接口值的变量类型，可以在使用 type switch 得到。(type)只能在 switch 中使用。``
+
+```go
+
+// 另一个实现了 I 接口的 R 类型
+type R struct { i int }
+
+func (p *R) Get() int { return p.i }
+
+func (p *R) Put(v int) { p.i = v } 
+
+func f(p I) { 
+    switch t := p.(type) { // 判断传递给 p 的实际类型
+        case *S: // 指向 S 的指针类型
+        case *R: // 指向 R 的指针类型
+        case S:  // S 类型
+        case R:  // R 类型
+        default: //实现了 I 接口的其他类型    
+    }
+}
+
+```
+
+#### 接口组合
+```go
+//接口组合类似类型组合，只不过只包含方法，不包含成员变量
+type ReadWriter interface{  //接口组合，避免代码重复
+  Reader      //接口Reader
+  Writer      //接口Writer
+}
+```
+
+#### Any类型[空接口]
+每种类型都能匹配到空接口：interface{}。空接口类型对方法没有任何约束（因为没有方法），它能包含任意类型，也可以实现到其他接口类型的转换。如果传递给该接口的类型变量实现了转换后的接口则可以正常运行，否则出现运行时错误。
+```go
+//interface{}即为可以指向任何对象的Any类型，类似Java中的Object类
+var v1 interface{} = struct{X int}{ 1 }
+var v2 interface{}= "abc" 
+
+func DoSomething(v interface{}) {//该函数可以接收任何类型的参数，因为任何类型都实现了空接口
+    // ...
+}
+```
+
+#### 接口代码示例
+```go
+
+// 接口animal
+type Animal interface {
+    Speak() string
+}
+
+// Dog类实现animal接口
+type Dog struct {} 
+
+func (d Dog) Speak() string {
+    return "Woof!"
+}
+
+// Cat类实现animal接口
+type Cat struct {} 
+
+func (c Cat) Speak() string {
+    return "Meow!"
+}
+
+// Llama实现animal接口
+type Llama struct {} 
+
+func (l Llama) Speak() string {
+    return "?????"
+}
+
+//JavaProgrammer实现animal接口
+type JavaProgrammer struct {}
+
+func (j JavaProgrammer) Speak() string {
+    return "Design patterns!"
+}
+
+//主函数
+func main() {
+    animals := []Animal{Dog{}, Cat{}, Llama{}, JavaProgrammer{} }  //利用接口实现多态
+    for _, animal := range animals {
+        fmt.Println(animal.Speak())  //打印不同实现该接口的类的方法返回值
+    }
+}
+```
+## 并发编程
+### 并发基础
+#### 概念
+并发意味着程序在运行时有多个执行上下文，对应多个调用栈。
+
+并发与并行的区别：
+
+并发的主流实现模型：
+
+实现模型 | 说明 | 特征
+---|---|---
+多进程|操作系统层面的并发模式|处理简单,互不影响,但是开销大
+多线程|系统层面的并发模式|有效,开销较大,高并发时影响效率
+基于回调的非阻塞/异步IO|多用于高并发服务器开发中|编程复杂，开销小
+协程|用户态线程，不需要操作系统抢占调度，寄存于线程中|编程简单，结构简单，开销极小，但需要语言的支持
+
+``共享内存系统：线程之间采用共享内存的方式通信，通过加锁来避免死锁或资源竞争。``
+
+``消息传递系统：将线程间共享状态封装在消息中，通过发送消息来共享内存，而非通过共享内存来通信。``
+
+#### 协程
+
+执行体是个抽象的概念，在操作系统中分为三个级别：进程（process），进程内的线程（thread），进程内的协程（coroutine，轻量级线程）。协程的数量级可达到上百万个，进程和线程的数量级最多不超过一万个。Go语言中的协程叫goroutine，Go标准库提供的调用操作，IO操作都会出让CPU给其他goroutine，让协程间的切换管理不依赖系统的线程和进程，不依赖CPU的核心数量。
+
+#### 并发通信
+并发编程的难度在于协调，协调需要通过通信，并发通信模型分为共享数据和消息。共享数据即多个并发单元保持对同一个数据的引用，数据可以是内存数据块，磁盘文件，网络数据等。数据共享通过加锁的方式来避免死锁和资源竞争。Go语言则采取消息机制来通信，每个并发单元是独立的个体，有独立的变量，不同并发单元间这些变量不共享，每个并发单元的输入输出只通过消息的方式。
+
+### Go Routine
+```go
+//定义调用体
+func Add(x, y int) {
+    z := x + y 
+    fmt.Println(z)
+}
+
+//go关键字执行调用，即会产生一个goroutine并发执行
+//当函数返回时，goroutine自动结束，如果有返回值,返回值会自动被丢弃
+go Add(1,1)
+
+//并发执行
+func main() {
+    for i := 0; i < 10; i++ {
+        //主函数启动了10个goroutine，然后返回，程序退出，并不会等待其他goroutine结束
+        go Add(i,i) //所以需要通过channel通信来保证其他goroutine可以顺利执行 
+    }
+}
+```
+
+### Channel
+channel就像管道的形式，是goroutine之间的通信方式，是进程内的通信方式，跨进程通信建议用分布式系统的方法来解决，例如Socket或http等通信协议。channel是类型相关，即一个channel只能传递一种类型的值，在声明时指定。
+
+#### 基础语法
+```go
+// 1、channel声明，声明一个管道chanName，该管道可以传递的类型是ElementType
+// 管道是一种复合类型，[chan ElementType],表示可以传递ElementType类型的管道[类似定语从句的修饰方法]
+var chanName chan ElementType
+var ch chan int // 声明一个可以传递int类型的管道
+var m map[string] chan bool //声明一个map，值的类型为可以传递bool类型的管道 
+
+// 2、初始化
+ch := make(chan int) //make一般用来声明一个复合类型，参数为复合类型的属性 
+
+// 3、管道写入,把值想象成一个球，"<-"的方向，表示球的流向，ch即为管道
+// 写入时，当管道已满（管道有缓冲长度）则会导致程序堵塞，直到有goroutine从中读取出值
+ch <- value
+
+// 管道读取，"<-"表示从管道把球倒出来赋值给一个变量
+// 当管道为空，读取数据会导致程序阻塞，直到有goroutine写入值
+value := <-ch
+
+// 4、每个case必须是一个IO操作，面向channel的操作，只执行其中的一个case操作，一旦满足则结束select过程
+// 面向channel的操作无非三种情况：成功读出；成功写入；即没有读出也没有写入
+select{
+    case <- chan1: //如果chan1读到数据，则进行该case处理语句
+    case chan2 <- :  //如果成功向chan2写入数据，则进入该case处理语句 
+    default:  //如果上面都没有成功，则进入default处理流程 
+}
+```
+#### 缓冲和超时机制
+
+```go
+//1、缓冲机制：为管道指定空间长度，达到类似消息队列的效果
+c := make(chan int,1024)  //第二个参数为缓冲区大小，与切片的空间大小类似
+
+// 通过range关键字来实现依次读取管道的数据，与数组或切片的range使用方法类似
+for i := range c {
+	fmt.Println("Received:",i)
+}
+
+//2、超时机制：利用select只要一个case满足，程序就继续执行而不考虑其他case的情况的特性实现超时机制
+timeout := make(chan bool,1)    //设置一个超时管道
+
+go func(){
+	time.Sleep(1e9) //设置超时时间，等待一秒钟
+	timeout<-true   //一分钟后往管道放一个true的值
+}()
+
+select {
+    case <- ch: //如果读到数据，则会结束select过程  
+    // 从ch中读取数据  
+    case <- timeout:
+    	// 如果前面的case没有调用到，必定会读到true值，结束select，避免永久等待
+    	// 一直没有从ch中读取到数据，但从timeout中读取到了数据 
+}
+
+```
+#### channel的传递
+```go
+// 1、channel的传递，来实现Linux系统中管道的功能，以插件的方式增加数据处理的流程
+type PipeData struct {
+	value int  
+	handler func(int) int
+    next chan int     //可以把[chan int]看成一个整体，表示放int类型的管道 
+}
+
+func handler(queue chan *PipeData){ //queue是一个存放*PipeDate类型的管道，可改变管道里的数据块内容  
+    for data := range queue{ //data的类型就是管道存放定义的类型，即PipeData
+        data.next <- data.handler(data.value)//该方法实现将PipeData的value值存放到next的管道中
+    }
+}
+
+//2、单向channel：只能用于接收或发送数据，是对channel的一种使用限制
+// 单向channel的声明
+var ch1 chan int     //正常channel，可读写
+var ch2 chan <- int  //单向只写channel  [chan<- int]看成一个整体，表示流入管道
+var ch3 <- chan int  //单向只读channel  [<-chan int]看成一个整体，表示流出管道
+
+// 管道类型强制转换
+ch4 := make(chan int)//ch4为双向管道
+ch5 := <- chan int(ch4) //把[<-chan int]看成单向只读管道类型，对ch4进行强制类型转换
+ch6 := chan <- int(ch4) //把[chan<- int]看成单向只写管道类型，对ch4进行强制类型转换
+
+
+func Parse(ch <- chan int){    //最小权限原则  
+    for value := range ch{
+    	fmt.Println("Parsing value",value)
+    }
+}
+
+//3、关闭channel，使用内置函数close()函数即可
+close(ch)
+
+// 判断channel是否关闭
+x,ok := <- ch //ok==false表示channel已经关闭
+if !ok {
+	// ...
+}
+```
+
+#### 多核并行化与同步
+```go
+//多核并行化
+runtime.GOMAXPROCS(16) //设置环境变量GOMAXPROCS的值来控制使用多少个CPU核心
+
+runtime.NumCPU() //来获取核心数
+
+//出让时间片
+runtime.Gosched() //在每个goroutine中控制何时出让时间片给其他goroutine
+
+/同步
+//同步锁
+sync.Mutex //单读单写：占用Mutex后，其他goroutine只能等到其释放该Mutex
+sync.RWMutex //单写多读：会阻止写，不会阻止读
+
+RLock() //读锁
+Lock() //写锁
+RUnlock() //解锁（读锁）
+Unlock() //解锁（写锁）
+
+//全局唯一性操作
+//once的Do方法保证全局只调用指定函数(setup)一次，其他goroutine在调用到此函数是会阻塞，直到once调用结束才继续
+once.Do(setup)
 ```
