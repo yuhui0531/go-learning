@@ -1076,7 +1076,7 @@ func RemoveAll(path string) error
 ```go
 func Create(name string) (file *File, err Error) 
 
-* func NewFile(fd uintptr, name string) *File*
+func NewFile(fd uintptr, name string) *File
 	
 func Open(name string) (file *File, err Error) 
 
