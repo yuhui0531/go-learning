@@ -466,12 +466,12 @@ three: 1
 
 ## 类的声明
 类的声明包括:
-`基础类型`(byte、int、bool、float等);
-`复合类型`(数组、结构体、指针等);
-`可以指向任何对象的类型`(Any类型,类似Java的Object类型);
-`值语义和引用语义`;
-`面向对象类型`;
-`接口`.
+- `基础类型`(byte、int、bool、float等)
+- `复合类型`(数组、结构体、指针等)
+- `可以指向任何对象的类型`(Any类型,类似Java的Object类型)
+- `值语义和引用语义`
+- `面向对象类型`
+- `接口`
 > Go大多数类型为值语义,可以给任何类型添加方法(包括内置类型,不包括指针类型). \
 > Any类型是空接口即interface{}.
 ### 方法
@@ -489,15 +489,18 @@ func (a *Integer) Add(b Integer){
 ```
 ### 值传递和引用传递
 > 值传递: b的修改并不会影响a的值 \
-> 引用传递: b的修改会影响a的值 \
-> Go大多类型为值语义,包括基本类型:byte,int,string等;复合类型:数组,结构体(struct),指针等
+> 引用传递: b的修改会影响a的值
+
+Go大多类型为值传递,包括
+- 基本类型:byte,int,string等
+- 复合类型:数组,结构体(struct),指针等
 
 ```go
 //值传递和引用传递
 b = a
 b.Modify() 
 //值传递
-var a = [3] int {1, 2, 3}
+var a = [3]int{1, 2, 3}
 b := a
 b[1]++
 fmt.Println(a, b) //a = [1, 2, 3]  b = [1, 3, 3]
@@ -505,7 +508,7 @@ fmt.Println(a, b) //a = [1, 2, 3]  b = [1, 3, 3]
 a := [3]int{1, 2, 3}
 b := &a  //b指向a,即为a的地址,对b指向的值改变实际上就是对a的改变(数组本身就是一种地址指向)
 b[1]++
-fmt.Println(a, *b)  //a=[1, 3, 3]  b=[1, 3, 3]   //*b,取地址指向的值
+fmt.Println(a, *b)  //a = [1, 3, 3]  b = [1, 3, 3]   //*b,取地址指向的值
 ```
 ### 结构体
 > struct的功能类似Java的class,可实现嵌套组合(类似继承的功能) \
@@ -522,7 +525,7 @@ type Rect struct{//定义矩形类 
 //为Rect类型绑定Area的方法,*Rect为指针引用可以修改传入参数的值
 func (r *Rect) Area() float64 {
     //方法归属于类型,不归属于具体的对象,声明该类型的对象即可调用该类型的方法
-    return r.width*r.height
+    return r.width * r.height
 }
 ```
 ### 类型初始化
@@ -532,7 +535,10 @@ func (r *Rect) Area() float64 {
     2. 内置函数new分配空间.传递给new函数的是一个内省,而不是一个值.`返回值是指向这个新分配的零值的指针.`
 - make()
     1. func make(Type, size IntegerType) Type
-    2. 内建函数 make 分配并且初始化 一个 slice, 或者 map 或者 chan 对象. 并且只能是这三种对象.和`new`一样,第一个参数是类型,不是一个值.但是`make的返回值就是这个类型`(即使一个引用类型),而不是指针.具体的返回值,依赖具体传入的类型.
+    2. 内建函数make分配并且初始化一个slice, 或者map或者chan对象.
+    3. 内建函数make只能分配并且初始化这三种对象.和`new`一样,第一个参数是类型,不是一个值.
+    4. 内建函数make的`返回值就是这个类型`(即使一个引用类型),而不是指针.具体的返回值,依赖具体传入的类型.
+
 ```go
 // 创建实例
 rect1 := new(Rect) //new一个对象
@@ -557,7 +563,7 @@ func (poem *Poem) recite(v ...interface{}) {
 组合,即方法代理,例如A包含B,即A通过消息传递的形式代理了B的方法,而不需要重复写B的方法.
 继承是指这样一种能力:它可以使用现有类的所有功能,并在无需重新编写原来的类的情况下对这些功能进行扩展.继承主要为了代码复用,继承也可以扩展已存在的代码模块(类).
 
-严格来讲,继承是“a kind of ”,即子类是父类的一种,例如student是person的一种;组合是“a part of”,即父类是子类中的一部分,例如眼睛是头部的一部分.
+严格来讲,继承是“a kind of”,即子类是父类的一种,例如student是person的一种;组合是“a part of”,即父类是子类中的一部分,例如眼睛是头部的一部分.
 
 ```go
 // 匿名组合的方式实现了类似Java继承的功能,可以实现多继承
@@ -630,7 +636,7 @@ func (r *Rect) area() float64{
 ### 接口[多态]
 多态性(polymorphism)是允许你将父对象设置成为和一个或更多的他的子对象相等的技术,赋值之后,父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作.
 
-> `简而言之,就是允许将子类类型的指针赋值给父类类型的指针.` \
+>`简而言之,多态就是允许将子类类型的指针赋值给父类类型的指针.` \
 > 即一个引用变量倒底会指向哪个类的实例对象,该引用变量发出的方法调用到底是哪个类中实现的方法,`必须在由程序运行期间才能决定.`\
 > 不修改程序代码就可以改变程序运行时所绑定的具体代码,让程序可以选择多个运行状态,这就是多态性.\
 > 多态分为编译时多态(静态多态)和运行时多态(动态多态).\
@@ -718,16 +724,16 @@ usb.Close()
 
 ```go
 type Writer interface{ //父接口
-    Write(buf []byte) (n int, err error)
+    Write(buf []byte) (n int, err error)
 }
 
-type ReadWriter interface{    //子接口
-    Read(buf []byte) (n int, err error)
-    Write(buf []byte) (n int, err error)
+type ReadWriter interface{ //子接口
+    Read(buf []byte) (n int, err error)
+    Write(buf []byte) (n int, err error)
 }
 
-var file1 ReadWriter = new(File)   //子接口实例
-var file2 Writer = file1           //子接口实例赋值给父接口
+var file1 ReadWriter = new(File)   //子接口实例
+var file2 Writer = file1           //子接口实例赋值给父接口
 ```
 
 ##### 接口查询
@@ -752,9 +758,7 @@ if file5, ok := file1.(File); ok{
 
 // 另一个实现了 I 接口的 R 类型
 type R struct { i int }
-
 func (p *R) Get() int { return p.i }
-
 func (p *R) Put(v int) { p.i = v } 
 
 func f(p I) { 
@@ -782,8 +786,8 @@ type ReadWriter interface{  //接口组合,避免代码重复
 每种类型都能匹配到空接口:interface{}.空接口类型对方法没有任何约束（因为没有方法）,它能包含任意类型,也可以实现到其他接口类型的转换.如果传递给该接口的类型变量实现了转换后的接口则可以正常运行,否则出现运行时错误.
 ```go
 //interface{}即为可以指向任何对象的Any类型,类似Java中的Object类
-var v1 interface{} = struct{X int}{ 1 }
-var v2 interface{} = "abc" 
+var v1 interface{} = struct{X int}{ 1 }
+var v2 interface{} = "abc"
 
 func DoSomething(v interface{}) {//该函数可以接收任何类型的参数,因为任何类型都实现了空接口
     // ...
@@ -799,14 +803,14 @@ type Animal interface {
 }
 
 // Dog类实现animal接口
-type Dog struct {} 
+type Dog struct {}
 
 func (d Dog) Speak() string {
-    return "Woof!"
+    return "Woof!"
 }
 
 // Cat类实现animal接口
-type Cat struct {} 
+type Cat struct {}
 
 func (c Cat) Speak() string {
     return "Meow!"
@@ -820,17 +824,17 @@ func (l Llama) Speak() string {
 }
 
 //JavaProgrammer实现animal接口
-type JavaProgrammer struct {}
+type JavaProgrammer struct {}
 
 func (j JavaProgrammer) Speak() string {
-    return "Design patterns!"
+    return "Design patterns!"
 }
 
 //主函数
 func main() {
-    animals := []Animal{Dog{}, Cat{}, Llama{}, JavaProgrammer{} }  //利用接口实现多态
-    for _, animal := range animals {
-        fmt.Println(animal.Speak())  //打印不同实现该接口的类的方法返回值
+    animals := []Animal{Dog{}, Cat{}, Llama{}, JavaProgrammer{} } //利用接口实现多态
+    for _, animal := range animals {
+        fmt.Println(animal.Speak()) //打印不同实现该接口的类的方法返回值
     }
 }
 ```
@@ -864,8 +868,8 @@ func main() {
 ### Go Routine
 ```go
 //定义调用体
-func Add(x, y int) {
-    z := x + y 
+func Add(x, y int) {
+    z := x + y
     fmt.Println(z)
 }
 
@@ -875,9 +879,9 @@ go Add(1,1)
 
 //并发执行
 func main() {
-    for i := 0; i < 10; i++ {
+    for i := 0; i < 10; i++ {
         //主函数启动了10个goroutine,然后返回,程序退出,并不会等待其他goroutine结束
-        go Add(i,i) //所以需要通过channel通信来保证其他goroutine可以顺利执行 
+        go Add(i,i) //所以需要通过channel通信来保证其他goroutine可以顺利执行 
     }
 }
 ```
@@ -985,6 +989,13 @@ if !ok {
 
 #### 多核并行化与同步
 ```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
 //多核并行化
 runtime.GOMAXPROCS(16) //设置环境变量GOMAXPROCS的值来控制使用多少个CPU核心
 
@@ -1298,10 +1309,7 @@ func main() {
         fmt.Println(err)
     }
     
-    e, err := strconv.Itoa("1023")
-    if err != nil {
-        fmt.Println(err)
-    }
+    e := strconv.Itoa(1023)
     fmt.Println(a, b, c, d, e)
 }
 ```
