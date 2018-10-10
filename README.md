@@ -1063,11 +1063,14 @@ Marshal方法将结构体转换成json文本，匹配规则如下：
 - 函数
 ```go
 func Mkdir(name string, perm FileMode) error 
-
+```
+```go
 func MkdirAll(path string, perm FileMode) error
-
+```
+```go
 func Remove(name string) error 
-
+```
+```go
 func RemoveAll(path string) error 
 ```
 ### 文件操作
@@ -1075,22 +1078,28 @@ func RemoveAll(path string) error
 - 函数
 ```go
 func Create(name string) (file *File, err Error) 
-
+```
+```go
 func NewFile(fd uintptr, name string) *File
-	
+```
+```go
 func Open(name string) (file *File, err Error) 
-
+```
+```go
 func OpenFile(name string, flag int, perm uint32) (file *File, err Error) 
 ```
 ### 写文件
 - 函数
 ```go
 func (file *File) Write(b []byte) (n int, err Error) 
-
+```
+```go
 func (file *File) WriteAt(b []byte, off int64) (n int, err Error) 
-
+```
+```go
 func (file *File) WriteString(s string) (ret int, err Error) 
 ```
+
 - 样例:
 ```go
 package main
@@ -1122,7 +1131,8 @@ func main() {
 - 函数
 ```go
 func (file *File) Read(b []byte) (n int, err Error) 
-
+```
+```go
 func (file *File) ReadAt(b []byte, off int64) (n int, err Error) 
 ```
 - 样例
