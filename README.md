@@ -113,6 +113,14 @@ const(
   Saturday       // 大写字母开头表示包外可见
   numberOfDays   // 小写字母开头表示包内私有
 )
+
+const (
+	B = 1 << (10 * iota)
+	KB
+	MB
+	GB
+	TB
+)
 ```
 ## 类型
 ### 基础类型
