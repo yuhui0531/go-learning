@@ -369,7 +369,7 @@ n, _ := f.Read(buf)
 ### 匿名函数与闭包
 ```go
 //1、匿名函数:不带函数名的函数,可以像变量一样被传递
-func(a, b int,z float32) bool{  //没有函数名
+func(a, b int, z float32) bool{  //没有函数名
   return a * b < int(z)
 }
 f := func(x, y int) int{
@@ -424,15 +424,41 @@ func deferTest(number int) int {
     return number
 }
 
+func deferTest2(number int) int {
+	defer func(n int) {
+		n++
+		fmt.Println("three2:", n)
+	}(number)
+
+	defer func(n int) {
+		n++
+		fmt.Println("two2:", n)
+	}(number)
+
+	defer func(n int) {
+		n++
+		fmt.Println("one2:", n)
+	}(number)
+
+	return number
+}
+
 func main() {
-    fmt.Println("函数返回值:", deferTest(0))
+    fmt.Println("函数1返回值:", deferTest(0))
+    fmt.Println("---------------------------")
+    fmt.Println("函数2返回值:", deferTest2(0))
 }
 
 /*
 one: 1
 two: 2
 three: 3
-函数返回值: 0
+函数1返回值: 0
+---------------------------
+one: 1
+two: 1
+three: 1
+函数2返回值: 0
 */
 ```
 # 面向对象编程
@@ -446,8 +472,7 @@ three: 3
 `值语义和引用语义`;
 `面向对象类型`;
 `接口`.
-> Go大多数类型为值语义,可以给任何类型添加方法(包括内置类型,不包括指针类型).
-
+> Go大多数类型为值语义,可以给任何类型添加方法(包括内置类型,不包括指针类型). \
 > Any类型是空接口即interface{}.
 ### 方法
 ```go
