@@ -76,7 +76,7 @@ const zero = 0.0
 //3、多常量赋值
 const(
   size int64 = 1024
-  eof =- 1
+  eof = -1
 )
 //4、常量的多重赋值,类似变量的多重赋值
 const u, v float32 = 0, 3
@@ -86,25 +86,25 @@ const mask = 1 << 3
 ```
 ### 预定义常量
 ```go
-//预定义常量：true、false、iota
-//iota：可修改常量,在每次const出现时被重置为0,在下一个const出现前,每出现一次iota,其代表的值自动增1.
+//预定义常量:true、false、iota
+//iota:可修改常量,在每次const出现时被重置为0,在下一个const出现前,每出现一次iota,其代表的值自动增1.
 const(          //iota重置为0
-  c0 = iota       //c0==0
-  c1 = iota       //c1==1
-  c2 = iota       //c2==2
+  c0 = iota       //c0 == 0
+  c1 = iota       //c1 == 1
+  c2 = iota       //c2 == 2
 )
 //两个const赋值语句一样可以省略后一个
 const(          //iota重置为0
-  c0 = iota       //c0==0
-  c1            //c1==1
-  c2            //c2==2
+  c0 = iota       //c0 == 0
+  c1            //c1 == 1
+  c2            //c2 == 2
 )
 ```
 ### 枚举
 枚举指一系列相关常量.
 ```go
 const(
-  Sunday = iota    //Sunday==0,以此类推
+  Sunday = iota    //Sunday == 0,以此类推
   Monday
   Tuesday
   Wednesday
@@ -151,6 +151,7 @@ var f1 float32
 f1 = 12     //不加小数点,被推导为整型
 f2 := 12.0  //加小数点,被推导为float64
 f1 = float32(f2)  //需要执行强制转换
+
 //2、浮点数的比较
 //浮点数不是精确的表达方式,不能直接使用“==”来判断是否相等,可以借用math的包math.Fdim
 ```
@@ -182,9 +183,10 @@ str = "hello world"
 数组表示同一类型数据,数组长度定义后就不可更改,长度是数组内的一个内置常量,可通过len()来获取
 ```go
 //1、创建数组
-var array1 [5]int    //声明：var 变量名 类型
+var array1 [5]int    //声明:var 变量名 类型
 var array2 [5]int = [5]int{1, 2, 3, 4, 5}   //初始化
-array3 := [5]int{1, 2, 3, 4, 5}    //直接用“：=”赋值
+var array3 = [5]int{1, 2, 3, 4, 5}   //初始化,忽略类型
+array4 := [5]int{1, 2, 3, 4, 5}    //直接用“:=”赋值
 [3][5]int  //二维数组
 [3]*float  //指针数组
 
@@ -192,13 +194,13 @@ array3 := [5]int{1, 2, 3, 4, 5}    //直接用“：=”赋值
 for i, v := range array{
   //第一个返回值为数组下标,第二个为元素的值
 }
-
-//3、值类型
-//数组在Go中作为一个值类型,值类型在赋值和函数参数传递时,只复制副本,
-//因此在函数体中并不能改变数组的内容,需用指针来改变数组的值.
 ```
+##### 注意
+
+> `数组在Go中作为一个值类型,值类型在赋值和函数参数传递时,只复制副本,因此在函数体中并不能改变数组的内容,**需用指针来改变数组的值**.`
+
 #### 切片(slice)
-数组在定义了长度后无法改变,且作为值类型在传递时产生副本,并不能改变数组元素的值.因此切片的功能弥补了这个不足,切片类似指向数组的一个指针.可以抽象为三个变量：指向数组的指针;切片中元素的个数(len函数);已分配的存储空间(cap函数).
+数组在定义了长度后无法改变,且作为值类型在传递时产生副本,并不能改变数组元素的值.因此切片的功能弥补了这个不足,切片类似指向数组的一个指针.可以抽象为三个变量:指向数组的指针;切片中元素的个数(len函数);已分配的存储空间(cap函数).
 ```go
 //1、创建切片
 //a)基于数组创建
@@ -305,7 +307,7 @@ if _, ok := myMap[valueX]; ok {
 ## 函数
 ### 函数定义与调用
 ```go
-//1、函数组成：关键字func, 函数名, 参数列表, 返回值, 函数体, 返回语句
+//1、函数组成:关键字func, 函数名, 参数列表, 返回值, 函数体, 返回语句
 //先名称后类型
 func 函数名(参数列表)(返回值列表){  //参数列表和返回值列表以变量声明的形式,如果单返回值可以直接加类型
   函数体
@@ -322,8 +324,8 @@ func Add(a, b int)(ret int, err error){
 import "mymath"
 sum, err := mymath.Add(1, 2)   //多返回值和错误处理机制
 //可见性,包括函数、类型、变量
-//本包内可见(private)：小写字母开头
-//包外可见(public)：大写字母开头
+//本包内可见(private):小写字母开头
+//包外可见(public):大写字母开头
 ```
 ### 不定参数
 ```go
@@ -359,7 +361,7 @@ n, _ := f.Read(buf)
 ```
 ### 匿名函数与闭包
 ```go
-//1、匿名函数：不带函数名的函数,可以像变量一样被传递
+//1、匿名函数:不带函数名的函数,可以像变量一样被传递
 func(a, b int,z float32) bool{  //没有函数名
   return a * b < int(z)
 }
@@ -386,10 +388,10 @@ if err != nil{
 }
 ```
 ### defer[延迟函数]
-语法：defer function_name()
+语法:defer function_name()
 1)defer在声明时不会执行,而是推迟执行,在return执行前,倒序执行defer[先进后出],一般用于释放资源,清理数据,记录日志,异常处理等.
 
-2)defer有一个特性：即使函数抛出异常,defer仍会被执行,这样不会出现程序错误导致资源不被释放,或者因为第三方包的异常导致程序崩溃.
+2)defer有一个特性:即使函数抛出异常,defer仍会被执行,这样不会出现程序错误导致资源不被释放,或者因为第三方包的异常导致程序崩溃.
 
 3)一般用于打开文件后释放资源的操作,比如打开一个文件,最后总是要关闭的.而在打开和关闭之间,会有诸多的处理,可能会有诸多的if-else、根据不同的情况需要提前返回
 ```go
@@ -416,14 +418,14 @@ func deferTest(number int) int {
 }
 
 func main() {
-    fmt.Println("函数返回值：", deferTest(0))
+    fmt.Println("函数返回值:", deferTest(0))
 }
 
 /*
 one: 1
 two: 2
 three: 3
-函数返回值： 0
+函数返回值: 0
 */
 ```
 # 面向对象编程
@@ -456,7 +458,7 @@ func (a *Integer) Add(b Integer){
 ### 值传递和引用传递
 > 值传递: b的修改并不会影响a的值 \
 > 引用传递: b的修改会影响a的值 \
-> Go大多类型为值语义,包括基本类型：byte,int,string等;复合类型：数组,结构体(struct),指针等
+> Go大多类型为值语义,包括基本类型:byte,int,string等;复合类型:数组,结构体(struct),指针等
 
 ```go
 //值传递和引用传递
@@ -506,7 +508,7 @@ rect2 := &Rect{} //为赋值默认值,bool默认值为false,int默认为零值0,
 rect3 := &Rect{0, 0, 100, 200} //取地址并赋值,按声明的变量顺序依次赋值
 rect4 := &Rect{width:100, height:200} //按变量名赋值不按顺序赋值
 
-// 构造函数：没有构造参数的概念,通常由全局的创建函数NewXXX来实现构造函数的功能
+// 构造函数:没有构造参数的概念,通常由全局的创建函数NewXXX来实现构造函数的功能
 func NewRect(x, y, width, height float64) *Rect{  
     return &Rect{x, y, width, height} //利用指针来改变传入参数的值达到类似构造参数的效果
 }
@@ -521,7 +523,7 @@ func (poem *Poem) recite(v ...interface{}) {
 ### 匿名组合[继承]
 
 组合,即方法代理,例如A包含B,即A通过消息传递的形式代理了B的方法,而不需要重复写B的方法.
-继承是指这样一种能力：它可以使用现有类的所有功能,并在无需重新编写原来的类的情况下对这些功能进行扩展.继承主要为了代码复用,继承也可以扩展已存在的代码模块(类).
+继承是指这样一种能力:它可以使用现有类的所有功能,并在无需重新编写原来的类的情况下对这些功能进行扩展.继承主要为了代码复用,继承也可以扩展已存在的代码模块(类).
 
 严格来讲,继承是“a kind of ”,即子类是父类的一种,例如student是person的一种;组合是“a part of”,即父类是子类中的一部分,例如眼睛是头部的一部分.
 
@@ -564,8 +566,8 @@ type X struct{
 }
 
 type Y struct{
-    X             //Y.X.Name会被隐藏,内层会被隐藏 
-    Name string   //只会访问到Y.Name,只会调用外层属性
+    X              //Y.X.Name会被隐藏,内层会被隐藏 
+    Name string    //只会访问到Y.Name,只会调用外层属性
 }
 
 ```
@@ -574,7 +576,7 @@ type Y struct{
 
 封装,也就是把客观事物封装成抽象的类,并且类可以把自己的数据和方法只让可信的类或者对象操作,对不可信的进行信息隐藏.
 
-> 封装的本质或目的其实程序对信息(数据)的控制力.封装分为两部分：该隐藏的隐藏,该暴露的暴露.封装可以隐藏实现细节,使得代码模块化.
+> 封装的本质或目的其实程序对信息(数据)的控制力.封装分为两部分:该隐藏的隐藏,该暴露的暴露.封装可以隐藏实现细节,使得代码模块化.
 
 `Go中用大写字母开头来表示public,可以包外访问;小写字母开头来表示private,只能包内访问;访问性是包级别非类型级别`
 
@@ -604,21 +606,21 @@ func (r *Rect) area() float64{
 
 #### 接口的概念
 
-> `接口即一组方法的集合，定义了对象的一组行为，方法包含实际的代码。换句话说，一个接口就是定义（规范或约束），而方法就是实现，接口的作用应该是将定义与实现分离，降低耦合度。` \
-> 习惯用“er”结尾来命名，例如“Reader”。\
-> `接口与对象的关系是多对多，即一个对象可以实现多个接口，一个接口也可以被多个对象实现。`
+> `接口即一组方法的集合,定义了对象的一组行为,方法包含实际的代码.换句话说,一个接口就是定义（规范或约束）,而方法就是实现,接口的作用应该是将定义与实现分离,降低耦合度.` \
+> 习惯用“er”结尾来命名,例如“Reader”.\
+> `接口与对象的关系是多对多,即一个对象可以实现多个接口,一个接口也可以被多个对象实现.`
 
-接口是Go语言整个类型系统的基石，其他语言的接口是不同组件之间的契约的存在，对契约的实现是强制性的，必须显式声明实现了该接口，这类接口称之为“侵入式接口”。而Go语言的接口是隐式存在，只要实现了该接口的所有函数则代表已经实现了该接口，并不需要显式的接口声明。
+接口是Go语言整个类型系统的基石,其他语言的接口是不同组件之间的契约的存在,对契约的实现是强制性的,必须显式声明实现了该接口,这类接口称之为“侵入式接口”.而Go语言的接口是隐式存在,只要实现了该接口的所有函数则代表已经实现了该接口,并不需要显式的接口声明.
 
 ##### 接口的比喻
-你的电脑上只有一个USB接口。这个USB接口可以接MP3，数码相机，摄像头，鼠标，键盘等。。。所有的上述硬件都可以公用这个接口，有很好的扩展性，该USB接口定义了一种规范，只要实现了该规范，就可以将不同的设备接入电脑，而设备的改变并不会对电脑本身有什么影响（低耦合）。
+你的电脑上只有一个USB接口.这个USB接口可以接MP3,数码相机,摄像头,鼠标,键盘等...所有的上述硬件都可以公用这个接口,有很好的扩展性,该USB接口定义了一种规范,只要实现了该规范,就可以将不同的设备接入电脑,而设备的改变并不会对电脑本身有什么影响（低耦合）.
 ##### 面向接口编程
-接口表示调用者和设计者的一种约定，在多人合作开发同一个项目时，事先定义好相互调用的接口可以大大提高开发的效率。接口是用类来实现的，实现接口的类必须严格按照接口的声明来实现接口提供的所有功能。有了接口，就可以在不影响现有接口声明的情况下，修改接口的内部实现，从而使兼容性问题最小化。
+接口表示调用者和设计者的一种约定,在多人合作开发同一个项目时,事先定义好相互调用的接口可以大大提高开发的效率.接口是用类来实现的,实现接口的类必须严格按照接口的声明来实现接口提供的所有功能.有了接口,就可以在不影响现有接口声明的情况下,修改接口的内部实现,从而使兼容性问题最小化.
 
-当其他设计者调用了接口后，就不能再随意更改接口的定义，否则项目开发者事先的约定就失去了意义。但是可以在类中修改相应的代码，完成需要改动的内容。
+当其他设计者调用了接口后,就不能再随意更改接口的定义,否则项目开发者事先的约定就失去了意义.但是可以在类中修改相应的代码,完成需要改动的内容.
 
 #### 非侵入式接口
-`非侵入式接口：一个类只需要实现了接口要求的所有函数就表示实现了该接口，并不需要显式声明.`
+`非侵入式接口:一个类只需要实现了接口要求的所有函数就表示实现了该接口,并不需要显式声明.`
 
 ```go
 type File struct{
@@ -631,7 +633,7 @@ func (f *File) Write(buf []byte) (n int, err error)
 func (f *File) Seek(off int64, whence int) (pos int64, err error)
 func (f *File) Close() error
 
-//接口1：
+//接口1:
 IFiletype IFile interface{
     Read(buf []byte) (n int, err error)
     Write(buf []byte) (n int, err error)
@@ -639,17 +641,17 @@ IFiletype IFile interface{
     Close() error
 }
 
-//接口2：
+//接口2:
 IReadertype IReader interface{
     Read(buf []byte) (n int, err error)
 }
 
-//接口赋值,File类实现了IFile和IReader接口，即接口所包含的所有方法
+//接口赋值,File类实现了IFile和IReader接口,即接口所包含的所有方法
 var file1 IFile = new(File)
 var file2 IReader = new(File)
 ```
 #### 接口赋值
-`只要类实现了该接口的所有方法，即可将该类赋值给这个接口，接口主要用于多态化方法。即对接口定义的方法，不同的实现方式。`
+`只要类实现了该接口的所有方法,即可将该类赋值给这个接口,接口主要用于多态化方法.即对接口定义的方法,不同的实现方式.`
 
 ##### 将对象实例赋值给接口
 ```go
@@ -657,13 +659,13 @@ type IUSB interface{
     //定义IUSB的接口方法
 }
 
-//方法定义在类外，绑定该类，以下为方便，备注写在类中
+//方法定义在类外,绑定该类,以下为方便,备注写在类中
 type MP3 struct{
-    //实现IUSB的接口，具体实现方式是MP3的方法
+    //实现IUSB的接口,具体实现方式是MP3的方法
 }
 
 type Mouse struct{
-    //实现IUSB的接口，具体实现方式是Mouse的方法
+    //实现IUSB的接口,具体实现方式是Mouse的方法
 }
 
 //接口赋值给具体的对象实例MP3
@@ -678,9 +680,9 @@ usb.Close()
 ```
 
 ##### 将接口赋值给另一个接口
-1) 只要两个接口拥有相同的方法列表（与次序无关），即是两个相同的接口，可以相互赋值.
-2) ``接口赋值只需要接口A的方法列表是接口B的子集（即假设接口A中定义的所有方法，都在接口B中有定义），那么B接口的实例可以赋值给A的对象。反之不成立，即子接口B包含了父接口A，因此可以将子接口的实例赋值给父接口。``
-3) `即子接口实例实现了子接口的所有方法，而父接口的方法列表是子接口的子集，则子接口实例自然实现了父接口的所有方法，因此可以将子接口实例赋值给父接口。`
+1) 只要两个接口拥有相同的方法列表（与次序无关）,即是两个相同的接口,可以相互赋值.
+2) ``接口赋值只需要接口A的方法列表是接口B的子集（即假设接口A中定义的所有方法,都在接口B中有定义）,那么B接口的实例可以赋值给A的对象.反之不成立,即子接口B包含了父接口A,因此可以将子接口的实例赋值给父接口.``
+3) `即子接口实例实现了子接口的所有方法,而父接口的方法列表是子接口的子集,则子接口实例自然实现了父接口的所有方法,因此可以将子接口实例赋值给父接口.`
 
 ```go
 type Writer interface{ //父接口
@@ -697,11 +699,11 @@ var file2 Writer = file1           //子接口实例赋值给父接�
 ```
 
 ##### 接口查询
-若要在 switch 外判断一个接口类型是否实现了某个接口，``可以使用“逗号 ok”。``
+若要在 switch 外判断一个接口类型是否实现了某个接口,``可以使用“逗号 ok”.``
 ```go
 value, ok := InterfaceVariable.(implementType)
 ```
-其中 InterfaceVariable 是接口变量（接口值），implementType 为实现此接口的类型，value 返回接口变量实际类型变量的值，如果该类型实现了此接口返回 true。
+其中 InterfaceVariable 是接口变量（接口值）,implementType 为实现此接口的类型,value 返回接口变量实际类型变量的值,如果该类型实现了此接口返回 true.
 ```go
 //判断file1接口指向的对象实例是否是File类型
 var file1 Writer = ...
@@ -712,7 +714,7 @@ if file5, ok := file1.(File); ok{
 
 ##### 接口类型查询
 
-``在 Go 中，要判断传递给接口值的变量类型，可以在使用 type switch 得到。(type)只能在 switch 中使用。``
+``在 Go 中,要判断传递给接口值的变量类型,可以在使用 type switch 得到.(type)只能在 switch 中使用.``
 
 ```go
 
@@ -737,21 +739,21 @@ func f(p I) { 
 
 #### 接口组合
 ```go
-//接口组合类似类型组合，只不过只包含方法，不包含成员变量
-type ReadWriter interface{  //接口组合，避免代码重复
+//接口组合类似类型组合,只不过只包含方法,不包含成员变量
+type ReadWriter interface{  //接口组合,避免代码重复
   Reader      //接口Reader
   Writer      //接口Writer
 }
 ```
 
 #### Any类型[空接口]
-每种类型都能匹配到空接口：interface{}。空接口类型对方法没有任何约束（因为没有方法），它能包含任意类型，也可以实现到其他接口类型的转换。如果传递给该接口的类型变量实现了转换后的接口则可以正常运行，否则出现运行时错误。
+每种类型都能匹配到空接口:interface{}.空接口类型对方法没有任何约束（因为没有方法）,它能包含任意类型,也可以实现到其他接口类型的转换.如果传递给该接口的类型变量实现了转换后的接口则可以正常运行,否则出现运行时错误.
 ```go
-//interface{}即为可以指向任何对象的Any类型，类似Java中的Object类
+//interface{}即为可以指向任何对象的Any类型,类似Java中的Object类
 var v1 interface{} = struct{X int}{ 1 }
 var v2 interface{} = "abc" 
 
-func DoSomething(v interface{}) {//该函数可以接收任何类型的参数，因为任何类型都实现了空接口
+func DoSomething(v interface{}) {//该函数可以接收任何类型的参数,因为任何类型都实现了空接口
     // ...
 }
 ```
@@ -803,29 +805,29 @@ func main() {
 ## 并发编程
 ### 并发基础
 #### 概念
-并发意味着程序在运行时有多个执行上下文，对应多个调用栈。
+并发意味着程序在运行时有多个执行上下文,对应多个调用栈.
 
-并发与并行的区别：
+并发与并行的区别:
 
-并发的主流实现模型：
+并发的主流实现模型:
 
 实现模型 | 说明 | 特征
 ---|---|---
 多进程|操作系统层面的并发模式|处理简单,互不影响,但是开销大
 多线程|系统层面的并发模式|有效,开销较大,高并发时影响效率
-基于回调的非阻塞/异步IO|多用于高并发服务器开发中|编程复杂，开销小
-协程|用户态线程，不需要操作系统抢占调度，寄存于线程中|编程简单，结构简单，开销极小，但需要语言的支持
+基于回调的非阻塞/异步IO|多用于高并发服务器开发中|编程复杂,开销小
+协程|用户态线程,不需要操作系统抢占调度,寄存于线程中|编程简单,结构简单,开销极小,但需要语言的支持
 
-``共享内存系统：线程之间采用共享内存的方式通信，通过加锁来避免死锁或资源竞争。``
+``共享内存系统:线程之间采用共享内存的方式通信,通过加锁来避免死锁或资源竞争.``
 
-``消息传递系统：将线程间共享状态封装在消息中，通过发送消息来共享内存，而非通过共享内存来通信。``
+``消息传递系统:将线程间共享状态封装在消息中,通过发送消息来共享内存,而非通过共享内存来通信.``
 
 #### 协程
 
-执行体是个抽象的概念，在操作系统中分为三个级别：进程（process），进程内的线程（thread），进程内的协程（coroutine，轻量级线程）。协程的数量级可达到上百万个，进程和线程的数量级最多不超过一万个。Go语言中的协程叫goroutine，Go标准库提供的调用操作，IO操作都会出让CPU给其他goroutine，让协程间的切换管理不依赖系统的线程和进程，不依赖CPU的核心数量。
+执行体是个抽象的概念,在操作系统中分为三个级别:进程（process）,进程内的线程（thread）,进程内的协程（coroutine,轻量级线程）.协程的数量级可达到上百万个,进程和线程的数量级最多不超过一万个.Go语言中的协程叫goroutine,Go标准库提供的调用操作,IO操作都会出让CPU给其他goroutine,让协程间的切换管理不依赖系统的线程和进程,不依赖CPU的核心数量.
 
 #### 并发通信
-并发编程的难度在于协调，协调需要通过通信，并发通信模型分为共享数据和消息。共享数据即多个并发单元保持对同一个数据的引用，数据可以是内存数据块，磁盘文件，网络数据等。数据共享通过加锁的方式来避免死锁和资源竞争。Go语言则采取消息机制来通信，每个并发单元是独立的个体，有独立的变量，不同并发单元间这些变量不共享，每个并发单元的输入输出只通过消息的方式。
+并发编程的难度在于协调,协调需要通过通信,并发通信模型分为共享数据和消息.共享数据即多个并发单元保持对同一个数据的引用,数据可以是内存数据块,磁盘文件,网络数据等.数据共享通过加锁的方式来避免死锁和资源竞争.Go语言则采取消息机制来通信,每个并发单元是独立的个体,有独立的变量,不同并发单元间这些变量不共享,每个并发单元的输入输出只通过消息的方式.
 
 ### Go Routine
 ```go
@@ -835,102 +837,102 @@ func Add(x, y int) {
     fmt.Println(z)
 }
 
-//go关键字执行调用，即会产生一个goroutine并发执行
-//当函数返回时，goroutine自动结束，如果有返回值,返回值会自动被丢弃
+//go关键字执行调用,即会产生一个goroutine并发执行
+//当函数返回时,goroutine自动结束,如果有返回值,返回值会自动被丢弃
 go Add(1,1)
 
 //并发执行
 func main() {
     for i := 0; i < 10; i++ {
-        //主函数启动了10个goroutine，然后返回，程序退出，并不会等待其他goroutine结束
+        //主函数启动了10个goroutine,然后返回,程序退出,并不会等待其他goroutine结束
         go Add(i,i) //所以需要通过channel通信来保证其他goroutine可以顺利执行 
     }
 }
 ```
 
 ### Channel
-channel就像管道的形式，是goroutine之间的通信方式，是进程内的通信方式，跨进程通信建议用分布式系统的方法来解决，例如Socket或http等通信协议。channel是类型相关，即一个channel只能传递一种类型的值，在声明时指定。
+channel就像管道的形式,是goroutine之间的通信方式,是进程内的通信方式,跨进程通信建议用分布式系统的方法来解决,例如Socket或http等通信协议.channel是类型相关,即一个channel只能传递一种类型的值,在声明时指定.
 
 #### 基础语法
 ```go
-// 1、channel声明，声明一个管道chanName，该管道可以传递的类型是ElementType
-// 管道是一种复合类型，[chan ElementType],表示可以传递ElementType类型的管道[类似定语从句的修饰方法]
+// 1、channel声明,声明一个管道chanName,该管道可以传递的类型是ElementType
+// 管道是一种复合类型,[chan ElementType],表示可以传递ElementType类型的管道[类似定语从句的修饰方法]
 var chanName chan ElementType
 var ch chan int // 声明一个可以传递int类型的管道
-var m map[string] chan bool //声明一个map，值的类型为可以传递bool类型的管道 
+var m map[string] chan bool //声明一个map,值的类型为可以传递bool类型的管道 
 
 // 2、初始化
-ch := make(chan int) //make一般用来声明一个复合类型，参数为复合类型的属性 
+ch := make(chan int) //make一般用来声明一个复合类型,参数为复合类型的属性 
 
-// 3、管道写入,把值想象成一个球，"<-"的方向，表示球的流向，ch即为管道
-// 写入时，当管道已满（管道有缓冲长度）则会导致程序堵塞，直到有goroutine从中读取出值
+// 3、管道写入,把值想象成一个球,"<-"的方向,表示球的流向,ch即为管道
+// 写入时,当管道已满（管道有缓冲长度）则会导致程序堵塞,直到有goroutine从中读取出值
 ch <- value
 
-// 管道读取，"<-"表示从管道把球倒出来赋值给一个变量
-// 当管道为空，读取数据会导致程序阻塞，直到有goroutine写入值
+// 管道读取,"<-"表示从管道把球倒出来赋值给一个变量
+// 当管道为空,读取数据会导致程序阻塞,直到有goroutine写入值
 value := <-ch
 
-// 4、每个case必须是一个IO操作，面向channel的操作，只执行其中的一个case操作，一旦满足则结束select过程
-// 面向channel的操作无非三种情况：成功读出；成功写入；即没有读出也没有写入
+// 4、每个case必须是一个IO操作,面向channel的操作,只执行其中的一个case操作,一旦满足则结束select过程
+// 面向channel的操作无非三种情况:成功读出；成功写入；即没有读出也没有写入
 select{
-    case <- chan1: //如果chan1读到数据，则进行该case处理语句
-    case chan2 <- :  //如果成功向chan2写入数据，则进入该case处理语句 
-    default:  //如果上面都没有成功，则进入default处理流程 
+    case <- chan1: //如果chan1读到数据,则进行该case处理语句
+    case chan2 <- :  //如果成功向chan2写入数据,则进入该case处理语句 
+    default:  //如果上面都没有成功,则进入default处理流程 
 }
 ```
 #### 缓冲和超时机制
 
 ```go
-//1、缓冲机制：为管道指定空间长度，达到类似消息队列的效果
-c := make(chan int,1024)  //第二个参数为缓冲区大小，与切片的空间大小类似
+//1、缓冲机制:为管道指定空间长度,达到类似消息队列的效果
+c := make(chan int,1024)  //第二个参数为缓冲区大小,与切片的空间大小类似
 
-// 通过range关键字来实现依次读取管道的数据，与数组或切片的range使用方法类似
+// 通过range关键字来实现依次读取管道的数据,与数组或切片的range使用方法类似
 for i := range c {
 	fmt.Println("Received:",i)
 }
 
-//2、超时机制：利用select只要一个case满足，程序就继续执行而不考虑其他case的情况的特性实现超时机制
+//2、超时机制:利用select只要一个case满足,程序就继续执行而不考虑其他case的情况的特性实现超时机制
 timeout := make(chan bool,1)    //设置一个超时管道
 
 go func(){
-	time.Sleep(1e9) //设置超时时间，等待一秒钟
+	time.Sleep(1e9) //设置超时时间,等待一秒钟
 	timeout<-true   //一分钟后往管道放一个true的值
 }()
 
 select {
-    case <- ch: //如果读到数据，则会结束select过程  
+    case <- ch: //如果读到数据,则会结束select过程  
     // 从ch中读取数据  
     case <- timeout:
-    	// 如果前面的case没有调用到，必定会读到true值，结束select，避免永久等待
-    	// 一直没有从ch中读取到数据，但从timeout中读取到了数据 
+    	// 如果前面的case没有调用到,必定会读到true值,结束select,避免永久等待
+    	// 一直没有从ch中读取到数据,但从timeout中读取到了数据 
 }
 
 ```
 #### channel的传递
 ```go
-// 1、channel的传递，来实现Linux系统中管道的功能，以插件的方式增加数据处理的流程
+// 1、channel的传递,来实现Linux系统中管道的功能,以插件的方式增加数据处理的流程
 type PipeData struct {
 	value int  
 	handler func(int) int
-    next chan int     //可以把[chan int]看成一个整体，表示放int类型的管道 
+	next chan int	//可以把[chan int]看成一个整体,表示放int类型的管道 
 }
 
-func handler(queue chan *PipeData){ //queue是一个存放*PipeDate类型的管道，可改变管道里的数据块内容  
-    for data := range queue{ //data的类型就是管道存放定义的类型，即PipeData
+func handler(queue chan *PipeData){ //queue是一个存放*PipeDate类型的管道,可改变管道里的数据块内容  
+    for data := range queue{ //data的类型就是管道存放定义的类型,即PipeData
         data.next <- data.handler(data.value)//该方法实现将PipeData的value值存放到next的管道中
     }
 }
 
-//2、单向channel：只能用于接收或发送数据，是对channel的一种使用限制
+//2、单向channel:只能用于接收或发送数据,是对channel的一种使用限制
 // 单向channel的声明
-var ch1 chan int     //正常channel，可读写
-var ch2 chan <- int  //单向只写channel  [chan<- int]看成一个整体，表示流入管道
-var ch3 <- chan int  //单向只读channel  [<-chan int]看成一个整体，表示流出管道
+var ch1 chan int     //正常channel,可读写
+var ch2 chan <- int  //单向只写channel  [chan<- int]看成一个整体,表示流入管道
+var ch3 <- chan int  //单向只读channel  [<-chan int]看成一个整体,表示流出管道
 
 // 管道类型强制转换
 ch4 := make(chan int)//ch4为双向管道
-ch5 := <- chan int(ch4) //把[<-chan int]看成单向只读管道类型，对ch4进行强制类型转换
-ch6 := chan <- int(ch4) //把[chan<- int]看成单向只写管道类型，对ch4进行强制类型转换
+ch5 := <- chan int(ch4) //把[<-chan int]看成单向只读管道类型,对ch4进行强制类型转换
+ch6 := chan <- int(ch4) //把[chan<- int]看成单向只写管道类型,对ch4进行强制类型转换
 
 
 func Parse(ch <- chan int){    //最小权限原则  
@@ -939,7 +941,7 @@ func Parse(ch <- chan int){    //最小权限原则  
     }
 }
 
-//3、关闭channel，使用内置函数close()函数即可
+//3、关闭channel,使用内置函数close()函数即可
 close(ch)
 
 // 判断channel是否关闭
@@ -961,8 +963,8 @@ runtime.Gosched() //在每个goroutine中控制何时出让时间片给其他gor
 
 /同步
 //同步锁
-sync.Mutex //单读单写：占用Mutex后，其他goroutine只能等到其释放该Mutex
-sync.RWMutex //单写多读：会阻止写，不会阻止读
+sync.Mutex //单读单写:占用Mutex后,其他goroutine只能等到其释放该Mutex
+sync.RWMutex //单写多读:会阻止写,不会阻止读
 
 RLock() //读锁
 Lock() //写锁
@@ -970,7 +972,7 @@ RUnlock() //解锁（读锁）
 Unlock() //解锁（写锁）
 
 //全局唯一性操作
-//once的Do方法保证全局只调用指定函数(setup)一次，其他goroutine在调用到此函数是会阻塞，直到once调用结束才继续
+//once的Do方法保证全局只调用指定函数(setup)一次,其他goroutine在调用到此函数是会阻塞,直到once调用结束才继续
 once.Do(setup)
 ```
 ## 文本处理
@@ -999,17 +1001,20 @@ func main() {
     str := `{"servers":
     [{"serverName":"Shanghai_VPN","serverIP":"127.0.0.1"},
     {"serverName":"Beijing_VPN","serverIP":"127.0.0.2"}]}`
+    
     err:=json.Unmarshal([]byte(str), &s)
+    
     if err!=nil{
         fmt.Println(err)
     }
+    
     fmt.Println(s)
 }
 ```
-> JSON格式与结构体一一对应，Unmarshal方法即将JSON文本转换成结构体。只会匹配结构体中的可导出字段，即首字母大写字段（类似java的public），匹配规则如下：json的key为Foo为例:
+> JSON格式与结构体一一对应,Unmarshal方法即将JSON文本转换成结构体.只会匹配结构体中的可导出字段,即首字母大写字段（类似java的public）,匹配规则如下:json的key为Foo为例:
 > 1. 先查找struct tag中含有Foo的可导出的struct字段（首字母大写）
-> 2. 其次查找字段名为Foo的可导出字段。
-> 3. 最后查找类似FOO或者FoO这类除首字母外，其他大小写不敏感的可导出字段。
+> 2. 其次查找字段名为Foo的可导出字段.
+> 3. 最后查找类似FOO或者FoO这类除首字母外,其他大小写不敏感的可导出字段.
 
 #### 生成JSON[Marshal(v interface{})]
 
@@ -1035,25 +1040,27 @@ func main() {
     s.Servers = append(s.Servers, Server{ServerName: "Shanghai_VPN", ServerIP: "127.0.0.1"})
     s.Servers = append(s.Servers, Server{ServerName: "Beijing_VPN", ServerIP: "127.0.02"})
     b, err := json.Marshal(s)
+    
     if err != nil {
         fmt.Println("JSON ERR:", err)
     }
+    
     fmt.Println(string(b))
 }
 ```
 
 ##### 说明
-Marshal方法将结构体转换成json文本，匹配规则如下：
-1. 如果字段的tag是“-”，那么该字段不会输出到JSON。
-2. 如果tag中带有自定义名称，那么该自定义名称会出现在JSON字段名中。例如例子中的“serverName”
-3. 如果tag中带有“omitempty”选项，那么如果该字段值为空，就不会输出到JSON中。
-4. 如果字段类型是bool,string,int,int64等，而tag中带有“，string”选项，那么这个字段在输出到JSON的时候会把该字段对应的值转换成JSON字符串。
+Marshal方法将结构体转换成json文本,匹配规则如下:
+1. 如果字段的tag是“-”,那么该字段不会输出到JSON.
+2. 如果tag中带有自定义名称,那么该自定义名称会出现在JSON字段名中.例如例子中的“serverName”
+3. 如果tag中带有“omitempty”选项,那么如果该字段值为空,就不会输出到JSON中.
+4. 如果字段类型是bool,string,int,int64等,而tag中带有“,string”选项,那么这个字段在输出到JSON的时候会把该字段对应的值转换成JSON字符串.
 
 ##### 注意事项
-> 1. Marshal只有在转换成功的时候才会返回数据，JSON对象只支持string作为key，如果要编码一个map,那么必须是map[string]T这种类型。（T为任意类型）
-> 2. Channel,complex和function不能被编码成JSON。
-> 3. 嵌套的数据不能编码，会进入死循环。
-> 4. 指针在编码时会输出指针指向的内容，而空指针会输出null。
+> 1. Marshal只有在转换成功的时候才会返回数据,JSON对象只支持string作为key,如果要编码一个map,那么必须是map[string]T这种类型.（T为任意类型）
+> 2. Channel,complex和function不能被编码成JSON.
+> 3. 嵌套的数据不能编码,会进入死循环.
+> 4. 指针在编码时会输出指针指向的内容,而空指针会输出null.
 
 ## 文件操作
 更多文件操作见GO的os包
@@ -1182,17 +1189,17 @@ func Remove(name string) Error
 #### 字符串操作
 函数 | 说明
 --- | ---
-Contains(s, substr string) bool | 字符串s中是否包含substr，返回bool值
-Join(a []string, sep string) string | 字符串链接，把slice a通过sep链接起来
-Index(s, sep string) int | 在字符串 s 中查找 sep 所在的位置，返回位置值，找不到返回-1
-Repeat(s string, count int) string | 重复 s 字符串 count 次，最后返回重复的字符串
-Replace(s, old, new string, n int) string | 在 s 字符串中，把 old 字符串替换为 new 字符串，n 表示替换的次数，小于 0 表示全部替换
-Split(s, sep string) []string | 把 s 字符串按照 sep 分割，返回 slice
+Contains(s, substr string) bool | 字符串s中是否包含substr,返回bool值
+Join(a []string, sep string) string | 字符串链接,把slice a通过sep链接起来
+Index(s, sep string) int | 在字符串 s 中查找 sep 所在的位置,返回位置值,找不到返回-1
+Repeat(s string, count int) string | 重复 s 字符串 count 次,最后返回重复的字符串
+Replace(s, old, new string, n int) string | 在 s 字符串中,把 old 字符串替换为 new 字符串,n 表示替换的次数,小于 0 表示全部替换
+Split(s, sep string) []string | 把 s 字符串按照 sep 分割,返回 slice
 Trim(s string, cutset string) string | 在 s 字符串中去除 cutset 指定的字符串
-Fields(s string) []string | 去除 s 字符串的空格符，并且按照空格分割返回 slice
+Fields(s string) []string | 去除 s 字符串的空格符,并且按照空格分割返回 slice
 
 #### 字符串转换
-1. Append 系列函数将整数等转换为字符串后，添加到现有的字节数组中
+1. Append 系列函数将整数等转换为字符串后,添加到现有的字节数组中.
 ```go
 package main
 
@@ -1243,18 +1250,22 @@ func main() {
     if err != nil {
         fmt.Println(err)
     }
+    
     b, err := strconv.ParseFloat("123.23", 64)
     if err != nil {
         fmt.Println(err)
     }
+    
     c, err := strconv.ParseInt("1234", 10, 64)
     if err != nil {
         fmt.Println(err)
     }
+    
     d, err := strconv.ParseUint("12345", 10, 64)
     if err != nil {
         fmt.Println(err)
     }
+    
     e, err := strconv.Itoa("1023")
     if err != nil {
         fmt.Println(err)
@@ -1266,7 +1277,7 @@ func main() {
 ## 模板语法
 ### 基本语法
 
-go 统一使用了 {{ 和 }} 作为左右标签，没有其他的标签符号。
+go 统一使用了 {{ 和 }} 作为左右标签,没有其他的标签符号.
 
 使用 . 来访问当前位置的上下文
 
