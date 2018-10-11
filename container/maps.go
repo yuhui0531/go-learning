@@ -45,6 +45,7 @@ func access() {
 	} else {
 		fmt.Printf("the value associated with %d does not exist.", m["name"])
 	}
+
 	var m3 map[string]int
 	k, ok := m3["aaa"]
 	fmt.Println(k, ok)

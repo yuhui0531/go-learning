@@ -10,15 +10,15 @@ func printSlice(s []int) {
 }
 
 func main() {
-	//var s []int // Zero value for slice is nil
-	//fmt.Println(s)
-	//
-	//for i := 0; i < 100; i++ {
-	//	printSlice(s)
-	//	s = append(s, 2*i+1)
-	//}
-	//
-	//fmt.Println(s)
+	var s []int // Zero value for slice is nil
+	fmt.Println(s)
+
+	for i := 0; i < 100; i++ {
+		printSlice(s)
+		s = append(s, 2*i+1)
+	}
+
+	fmt.Println(s)
 
 	createSlice()
 	copySlice()

@@ -21,7 +21,7 @@ func main() {
 	fmt.Println(GB)
 	fmt.Println(TB)
 
-	runtime.NumCPU()
+	fmt.Println(runtime.NumCPU())
 
 	var arr1 [5]int
 	var arr2 = [5]int{1, 2, 3, 4, 5}

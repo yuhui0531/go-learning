@@ -21,6 +21,7 @@ func main() {
 	s1 := arr[2:6]
 	fmt.Println("before updating slice s1.")
 	fmt.Println(s1)
+
 	updateSlice(s1)
 	fmt.Println("after updating slice s1.")
 	fmt.Println(s1)

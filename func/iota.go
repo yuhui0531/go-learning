@@ -10,8 +10,8 @@ func main() {
 		c        //2
 		d = "ha" //独立值，iota += 1
 		e        //"ha"   iota += 1
-		f = 100  //iota +=1
-		g        //100  iota +=1
+		f = 100  //iota += 1
+		g        //100  iota += 1
 		h = iota //7,恢复计数
 		i        //8
 	)

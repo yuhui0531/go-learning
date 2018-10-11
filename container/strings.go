@@ -30,9 +30,9 @@ func printString(s string) {
 }
 
 func main() {
-	//printString("I am Ronny")
-	//printString("I'm Ronny")
-	//printString("我是中国人,我爱中华国!中国人テスト")
+	printString("I am Ronny")
+	printString("I'm Ronny")
+	printString("我是中国人,我爱中华国!中国人テスト")
 
 	prefix := strings.HasPrefix("I have", "I")
 	print(prefix)

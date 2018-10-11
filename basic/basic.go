@@ -31,6 +31,7 @@ func main() {
 }
 
 func testSparse() {
+
 	s := intsets.Sparse{}
 	s.Insert(1)
 	s.Insert(1000)

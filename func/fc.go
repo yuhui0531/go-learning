@@ -11,7 +11,6 @@ func max(num1, num2 int) int {
 	}
 
 	return result
-
 }
 
 func main() {

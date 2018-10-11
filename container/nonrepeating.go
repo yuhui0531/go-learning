@@ -3,8 +3,10 @@ package container
 import "fmt"
 
 func find(s string) int {
+
 	lastOccurred := make(map[byte]int)
 	start, maxLength := 0, 0
+
 	for i, ch := range []byte(s) {
 
 		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
@@ -20,8 +22,10 @@ func find(s string) int {
 }
 
 func find2(s string) int {
+
 	lastOccurred := make(map[rune]int)
 	start, maxLength := 0, 0
+
 	for i, ch := range []rune(s) {
 
 		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
@@ -33,6 +37,7 @@ func find2(s string) int {
 		}
 		lastOccurred[ch] = i
 	}
+
 	return maxLength
 }
 

@@ -98,13 +98,11 @@ func main() {
 
 	root2.traverse()
 
-	/*
-	   nodes := []treeNode{
-	       {value: 3},
-	       {},
-	       {6, nil, &root},
-	   }
+	nodes := []treeNode{
+		{value: 3},
+		{},
+		{6, nil, &root},
+	}
 
-	   fmt.Println(nodes)
-	*/
+	fmt.Println(nodes)
 }

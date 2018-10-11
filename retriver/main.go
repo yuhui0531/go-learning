@@ -36,6 +36,7 @@ func main() {
 }
 
 func inspect(r Retriever) {
+
 	switch v := r.(type) {
 	case *mock.Retriever:
 		fmt.Println("contents", v.Contents)

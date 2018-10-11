@@ -50,6 +50,5 @@ func main() {
 
 	fmt.Println("find max element from array list:")
 	findMax(arr3)
-
 	// 数组传参是值传递,会直接拷贝过去,生成一模一样的数组拷贝 .
 }
