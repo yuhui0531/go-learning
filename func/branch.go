@@ -14,47 +14,47 @@ import (
 
 func main() {
 	/*
-		const filename = "abc.txt"
-		contents, err := ioutil.ReadFile(filename)
-		if err != nil {
-			fmt.Println(err)
-		} else {
-			fmt.Printf("%s\n", contents)
-		}
+	   const filename = "abc.txt"
+	   contents, err := ioutil.ReadFile(filename)
+	   if err != nil {
+	       fmt.Println(err)
+	   } else {
+	       fmt.Printf("%s\n", contents)
+	   }
 
-		fmt.Println(grade(0))
-		fmt.Println(grade(59))
-		fmt.Println(grade(60))
-		fmt.Println(grade(80))
-		fmt.Println(grade(90))
-		fmt.Println(grade(100))
-		//fmt.Println(grade(101))
-		sum := 0
-		for i := 1; i <= 100; i++ {
-			sum += i
-		}
-		fmt.Printf("%d\n", sum)
+	   fmt.Println(grade(0))
+	   fmt.Println(grade(59))
+	   fmt.Println(grade(60))
+	   fmt.Println(grade(80))
+	   fmt.Println(grade(90))
+	   fmt.Println(grade(100))
+	   //fmt.Println(grade(101))
+	   sum := 0
+	   for i := 1; i <= 100; i++ {
+	       sum += i
+	   }
+	   fmt.Printf("%d\n", sum)
 
-		fmt.Println(convert2bin(0))
-		fmt.Println(convert2bin(8))
-		fmt.Println(convert2bin(13))
-		fmt.Println(convert2bin(16))
-		fmt.Println(convert2bin(17))
-		fmt.Println(convert2bin(65535))
+	   fmt.Println(convert2bin(0))
+	   fmt.Println(convert2bin(8))
+	   fmt.Println(convert2bin(13))
+	   fmt.Println(convert2bin(16))
+	   fmt.Println(convert2bin(17))
+	   fmt.Println(convert2bin(65535))
 
-		printFileContent("/tmp/abc.txt")
+	   printFileContent("/tmp/abc.txt")
 
-		read()
+	   read()
 
-		q, r := div(13, 4)
-		println(q, r)
+	   q, r := div(13, 4)
+	   println(q, r)
 
 
-		if result, err := eval(5, 4, "/"); err != nil {
-			print(err)
-		} else {
-			print(result)
-		}
+	   if result, err := eval(5, 4, "/"); err != nil {
+	       print(err)
+	   } else {
+	       print(result)
+	   }
 	*/
 
 	fmt.Println(apply(pow, 3, 4))
